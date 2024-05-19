@@ -1,5 +1,8 @@
 import SearchIcon from "@mui/icons-material/Search";
 import { useState } from "react";
+import { useHistory } from "react";
+import { useStateValue } from "react";
+import { SET_SEARCH_TERM } from "../types";
 import styled from 'styled-components';
 import { Button } from "@mui/material";
 import MicIcon from "@mui/icons-material/Mic";
@@ -57,10 +60,23 @@ border-radius: 999px;
   }
  }
  `;
-const Search = () => {
+const Search = (hide) => {
   const [input, setInput] = useState ("");
+  const history = useHistory();
+  const [{}, dispatch] =useStateValue();
+
+    const search = e => {
+      e.preventDefault ();
+      dispatch ({
+        type: SET_SEARCH_TERM,
+        term: input
+      })
+      console.log(input);
+      history.push("/search");
+    }
+
   return (
-    <form>
+    <form onSubmit = {search}>
       <SearchInput>
         <SearchIcon className="searchIcon" />
         <input
@@ -74,12 +90,14 @@ const Search = () => {
           <AddAPhotoOutlinedIcon className="searchPhoto" />
         </div>
       </SearchInput>
-      <SearchButton>
-        <Button type="submit" variant="outline">
-          <img src={AddCircleOutlineOutlinedIcon} alt=""/>
-          <p>Add shortcut</p>
-        </Button>
-      </SearchButton>
+      {!hide && (
+        <SearchButton>
+          <Button type="submit" variant="outline">
+            <img src={AddCircleOutlineOutlinedIcon} alt="" />
+            <p>Add shortcut</p>
+          </Button>
+        </SearchButton>
+      )}
     </form>
   );
 }

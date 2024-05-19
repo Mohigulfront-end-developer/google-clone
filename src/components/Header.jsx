@@ -47,8 +47,6 @@ img {
 }
 `;
 
-
-
 const Header = () => {
   return (
     <HomeContainer>
